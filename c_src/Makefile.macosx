@@ -20,7 +20,7 @@
 #UNIVERSAL_FLAGS = $(UNIVERSAL_SDK) -arch i386 -arch ppc
 
 # or 
-UNIVERSAL_FLAGS = -arch i386
+UNIVERSAL_FLAGS = -arch i386 -arch x86_64 -arch ppc
 CC = cc
 
 #
@@ -28,9 +28,11 @@ CC = cc
 # the SDL framework has been installed in /Library/Frameworks.
 #
 
-CFLAGS	= -g -O2 -Wall -ObjC -D_THREAD_SAFE -D_REENTRANT -D_OSX_COCOA -I/Library/Frameworks/SDL.framework/Headers -F/Library/Frameworks $(ERLINC) $(UNIVERSAL_FLAGS)
+CFLAGS	= -g -O2 -Wall -ObjC -D_THREAD_SAFE -D_REENTRANT -D_OSX_COCOA $(ERLINC) $(UNIVERSAL_FLAGS) \
+	-I/Library/Frameworks/SDL.framework/Headers -I$(HOME)/Library/Frameworks/SDL.framework/Headers \
+	-F/Library/Frameworks -F$(HOME)/Library/Frameworks $(ERLINC) $(UNIVERSAL_FLAGS)
 
-LDFLAGS = -F/Library/Frameworks -framework SDL -framework IOKit -framework Carbon -framework Cocoa -L. $(UNIVERSAL_FLAGS)
+LDFLAGS = -F/Library/Frameworks -F$(HOME)/Library/Frameworks -framework SDL -framework IOKit -framework Carbon -framework Cocoa -L. $(UNIVERSAL_FLAGS)
 
 TARGETDIR = ../priv
 

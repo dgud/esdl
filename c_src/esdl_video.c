@@ -15,6 +15,18 @@
 
 #include <SDL_syswm.h>
 
+#ifdef _OSX_COCOA
+	#include <Cocoa/Cocoa.h>
+	inline NSRect NSRectMake(float x, float y, float w, float h) {
+		NSRect r1;
+		r1.origin.x = x;
+		r1.origin.y = y;
+		r1.size.width = w;
+		r1.size.height = h;
+		return r1;	
+	}
+#endif
+
 void es_setVideoMode(sdl_data *sd, int len, char* bp) 
 {
    if(!sd->use_smp) {
@@ -836,25 +848,19 @@ void es_wm_isMaximized(sdl_data *sd, int len, char *buff)
 	SDL_GetWMInfo(&info);
 	s = IsZoomed(info.window);
      }
-#else
-     {  /* Workaround for missing functions, window manager dep functions */
-/* 	SDL_Surface *screen; */
-/* 	SDL_Rect **modes; */
+#elif defined(_OSX_COCOA)
+	SDL_SysWMinfo info;
+
+	SDL_VERSION(&info.version);
+	SDL_GetWMInfo(&info);     
 	
+	NSWindow __attribute ((unused)) *w = info.nsWindowPtr;
+	
+	SDL_Surface *screen = SDL_GetVideoSurface();	
+	s = (screen->flags & SDL_NOFRAME)>0 || (screen->flags & SDL_FULLSCREEN)>0; 
+#else
+     {  
  	s = 0; 
-/* 	screen = SDL_GetVideoSurface();		    */
-	/* Get available fullscreen modes, I think it gives the max resolution */
-/* 	modes = SDL_ListModes(screen->format, screen->flags | SDL_FULLSCREEN);  */
-	/* Check is there are any modes available */
-/* 	if(modes == (SDL_Rect **)0  || modes == (SDL_Rect **)-1) { */
-/* 	   s = 0;   */  /* We don't know ?? */
-/* 	}  */
-/* 	else { */
-/* 	   if ( screen->w >= modes[0]->w && screen->h >= modes[0]->h)  */
-/* 	      s = 1; */
-/* 	   else */
-/* 	      s = 0; */
-/* 	} */
      }
 #endif
 
@@ -867,10 +873,9 @@ void es_wm_isMaximized(sdl_data *sd, int len, char *buff)
 void es_wm_maximize(sdl_data *sd, int len, char *bp)
 {
     if(!sd->use_smp) {
-	es_wm_maximize2(sd->driver_data, 
-			driver_caller(sd->driver_data), bp);
+		es_wm_maximize2(sd->driver_data, driver_caller(sd->driver_data), bp);
     } else { 
-	gl_dispatch(sd, SDL_WM_MaximizeFunc, len, bp);
+		gl_dispatch(sd, SDL_WM_MaximizeFunc, len, bp);
     }
 }
 
@@ -880,6 +885,16 @@ void es_wm_maximize2(ErlDrvPort port, ErlDrvTermData caller, char *buff)
     SDL_SysWMinfo info;
     SDL_GetWMInfo(&info);
     ShowWindow(info.window, SW_SHOWMAXIMIZED);
+#elif defined(_OSX_COCOA)
+	SDL_SysWMinfo info;
+
+	SDL_VERSION(&info.version);
+	SDL_GetWMInfo(&info);     
+
+	NSWindow __attribute ((unused)) *w = info.nsWindowPtr;
+	NSRect fullframe = [[NSScreen mainScreen] frame];
+	NSRect prefframe = [[NSScreen mainScreen] visibleFrame];
+	[w setFrame:NSRectMake(prefframe.origin.x, prefframe.origin.y, fullframe.size.width, prefframe.size.height) display:YES];
 #endif
 }
 
