@@ -878,6 +878,7 @@ void es_wm_maximize2(ErlDrvPort port, ErlDrvTermData caller, char *buff)
 {
 #ifdef _WIN32
     SDL_SysWMinfo info;
+	SDL_VERSION(&info.version);
     SDL_GetWMInfo(&info);
     ShowWindow(info.window, SW_SHOWMAXIMIZED);
 #endif
