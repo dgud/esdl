@@ -23,4 +23,4 @@ ERLINC = ../include
 ERL_COMPILE_FLAGS = -pa ../../esdl/ebin
 
 %.beam: $(ESRC)/%.erl
-	$(ERLC) -W -I$(ERLINC) -bbeam $(ERL_FLAGS) $(ERL_COMPILE_FLAGS) -o$(EBIN) $<
+	$(ERLC) -W -I$(ERLINC) -I../.. -bbeam $(ERL_FLAGS) $(ERL_COMPILE_FLAGS) -o$(EBIN) $<

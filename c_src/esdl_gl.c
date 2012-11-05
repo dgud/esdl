@@ -257,63 +257,63 @@ void * esdl_gl_main_loop(void *sd) {
 	     /* OpenGL must be initilized in the thread */
 	     switch(esdl_q[esdl_q_first].op) {
 	     case SDL_GL_SwapBuffersFunc:
-		 SDL_GL_SwapBuffers();
-		 break;
+		   SDL_GL_SwapBuffers();
+		   break;
 		 /* Events must be handled in this thread on windows */
 	     case SDL_PumpEventsFunc:
-		 SDL_PumpEvents();
-		 break;
+		   SDL_PumpEvents();
+		   break;
 	     case SDL_PeepEventsFunc:
-		 es_peepEvents2(port, esdl_q[esdl_q_first].caller, 
+		   es_peepEvents2(port, esdl_q[esdl_q_first].caller, 
 				esdl_q[esdl_q_first].buff);
 		 break;
 	     case SDL_PollEventFunc:
-		 es_pollEvent2(port, esdl_q[esdl_q_first].caller);
-		 break;
+		   es_pollEvent2(port, esdl_q[esdl_q_first].caller);
+		   break;
 	     case SDL_WaitEventFunc:
-		 es_waitEvent2(port, esdl_q[esdl_q_first].caller);
-		 break;	     
+		   es_waitEvent2(port, esdl_q[esdl_q_first].caller);
+		   break;	     
 		 /* Other gl related functions */
 
 	     case SDL_SetVideoModeFunc:
-		 es_setVideoMode2(port, esdl_q[esdl_q_first].caller, 
+		   es_setVideoMode2(port, esdl_q[esdl_q_first].caller, 
 				  esdl_q[esdl_q_first].buff);
-		 break;
+		   break;
 	     case SDL_VideoModeOKFunc:
-		 es_videoModeOK2(port, esdl_q[esdl_q_first].caller, 
+		   es_videoModeOK2(port, esdl_q[esdl_q_first].caller, 
 				 esdl_q[esdl_q_first].buff);
-		 break;
+		   break;
 	     case SDL_WM_ToggleFullScreenFunc:
-		 es_wm_toggleFullScreen2(port, esdl_q[esdl_q_first].caller, 
+		   es_wm_toggleFullScreen2(port, esdl_q[esdl_q_first].caller, 
 					 esdl_q[esdl_q_first].buff);
-		 break;
+		   break;
 	     case ESDL_OpenglInitFunc:
-		 es_init_opengl2(port, esdl_q[esdl_q_first].caller, 
+		   es_init_opengl2(port, esdl_q[esdl_q_first].caller, 
 				 esdl_q[esdl_q_first].buff);
-		 break;
+		   break;
 	     case SDL_GL_GetAttributeFunc:
-		 es_gl_getAttribute2(port, esdl_q[esdl_q_first].caller, 
+		   es_gl_getAttribute2(port, esdl_q[esdl_q_first].caller, 
 				     esdl_q[esdl_q_first].buff);
-		 break;
+		   break;
 	     case SDL_GL_SetAttributeFunc:
-		 es_gl_setAttribute2(port, esdl_q[esdl_q_first].caller, 
+		   es_gl_setAttribute2(port, esdl_q[esdl_q_first].caller, 
 				     esdl_q[esdl_q_first].buff);
-		 break;
+		   break;
 	     case SDL_ShowCursorFunc:
-		 es_showCursor2(port, esdl_q[esdl_q_first].caller, 
+		   es_showCursor2(port, esdl_q[esdl_q_first].caller, 
 				esdl_q[esdl_q_first].buff);
-		 break;
+		   break;
 	     case SDL_WM_SetCaptionFunc:
-		 es_wm_setCaption2(esdl_q[esdl_q_first].buff);
-		 break;
+		   es_wm_setCaption2(esdl_q[esdl_q_first].buff);
+		   break;
 	     case SDL_WM_GetInfoFunc:
-		 es_wm_getInfo2(port, esdl_q[esdl_q_first].caller, 
+		   es_wm_getInfo2(port, esdl_q[esdl_q_first].caller, 
 				esdl_q[esdl_q_first].buff);
-		 break;
+		   break;
 	     case SDL_WM_MaximizeFunc:
-		 es_wm_maximize2(port, esdl_q[esdl_q_first].caller, 
+		   es_wm_maximize2(port, esdl_q[esdl_q_first].caller, 
 				 esdl_q[esdl_q_first].buff);
-		 break;
+		   break;
 	     }
 	 }
 	 for(i=0; i < esdl_q[esdl_q_first].no_bins; i++)
